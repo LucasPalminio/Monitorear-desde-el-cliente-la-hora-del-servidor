@@ -38,22 +38,24 @@ public class ServidorUDP {
 
                 puerto = paquete.getPort();
                 address = paquete.getAddress();
+                if(mensaje !=null) {
+                    for (int i = 0; i < Integer.parseInt(mensaje); i++) {
+                        reloj = LocalDateTime.now();
+                        tiempoActual = reloj.format(formato);
+                        mensajeComp = tiempoActual;
+                        mensaje2_bytes = mensajeComp.getBytes();
+                        paqueteEnv = new DatagramPacket(mensaje2_bytes, mensajeComp.length(), address, puerto);
 
-                if (mensaje.startsWith("Fin")) {
-                    mensajeComp="Adios";
+                        socket.send(paqueteEnv);
+                    }
                 }
 
-                if (mensaje.startsWith("Hora")) {
-                    reloj = LocalDateTime.now();
-                    tiempoActual = reloj.format(formato);
-                    mensajeComp= tiempoActual;
-                }
-
+                /*
                 mensaje2_bytes = mensajeComp.getBytes();
                 paqueteEnv = new DatagramPacket(mensaje2_bytes,mensajeComp.length(),address,puerto);
 
                 socket.send(paqueteEnv);
-
+                */
             }while(true);
 
         }catch(Exception e){
