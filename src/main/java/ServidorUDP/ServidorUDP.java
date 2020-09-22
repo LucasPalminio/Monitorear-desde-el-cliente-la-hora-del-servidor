@@ -8,27 +8,54 @@ import java.time.format.DateTimeFormatter;
 * */
 public class ServidorUDP {
     public static void main(String[] args) {
+        //////////////////////////////// Reloj ////////////////////////////////
         LocalDateTime reloj = LocalDateTime.now();
-
 
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("HH:mm:ss:SSS");
 
         String tiempoActual = reloj.format(formato);
-
-        System.out.println("Hello world");
-
-        System.out.println(tiempoActual);
-
-        ServerSocket servidorHora;
+        ///////////////////////////////////////////////////////////////////////
+        DatagramSocket socket;
 
         try{
-            servidorHora = new ServerSocket(50000);
 
-            Socket horaSocket = servidorHora.accept();
+            socket = new DatagramSocket(33333);
+            byte[] mensajeBytes = new byte[256];
+            String mensaje = "";
+            mensaje = new String(mensajeBytes);
+            String mensajeComp = "";
+
+            DatagramPacket paquete = new DatagramPacket(mensajeBytes,256);
+            DatagramPacket paqueteEnv = new DatagramPacket(mensajeBytes,256);
+
+            int puerto;
+            InetAddress address;
+            byte[] mensaje2_bytes = new byte[256];
             do{
-                reloj = LocalDateTime.now();
-                tiempoActual = reloj.format(formato);
+                socket.receive(paquete);
+                mensaje = new String(mensajeBytes).trim();
+                System.out.println(mensaje);
+
+                puerto = paquete.getPort();
+                address = paquete.getAddress();
+
+                if (mensaje.startsWith("Fin")) {
+                    mensajeComp="Adios";
+                }
+
+                if (mensaje.startsWith("Hora")) {
+                    reloj = LocalDateTime.now();
+                    tiempoActual = reloj.format(formato);
+                    mensajeComp= tiempoActual;
+                }
+
+                mensaje2_bytes = mensajeComp.getBytes();
+                paqueteEnv = new DatagramPacket(mensaje2_bytes,mensajeComp.length(),address,puerto);
+
+                socket.send(paqueteEnv);
+
             }while(true);
+
         }catch(Exception e){
             System.err.println(e.getMessage());
             System.exit(1);
