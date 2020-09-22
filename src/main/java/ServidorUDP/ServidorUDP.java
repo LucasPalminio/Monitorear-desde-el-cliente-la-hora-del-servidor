@@ -20,18 +20,21 @@ public class ServidorUDP {
         try{
 
             socket = new DatagramSocket(6000);
-            byte[] mensajeBytes = new byte[256];
+
             String mensaje = "";
-            mensaje = new String(mensajeBytes);
+
             String mensajeComp = "";
 
-            DatagramPacket paquete = new DatagramPacket(mensajeBytes,256);
-            DatagramPacket paqueteEnv = new DatagramPacket(mensajeBytes,256);
+
+            //DatagramPacket paqueteEnv = new DatagramPacket(mensajeBytes,256);
 
             int puerto;
             InetAddress address;
-            byte[] mensaje2_bytes = new byte[256];
+
             do{
+                byte[] mensajeBytes = new byte[256]; //Mensaje que recibe, cuantas horas desea el cliente
+                byte[] mensaje2_bytes = new byte[256]; //Mensaje que envia, enviar hora con milisegundos
+                DatagramPacket paquete = new DatagramPacket(mensajeBytes,256);
                 socket.receive(paquete);
                 mensaje = new String(mensajeBytes).trim();
                 System.out.println(mensaje);
@@ -42,14 +45,16 @@ public class ServidorUDP {
                     for (int i = 0; i < Integer.parseInt(mensaje); i++) {
                         reloj = LocalDateTime.now();
                         tiempoActual = reloj.format(formato);
-                        mensajeComp = tiempoActual;
+                        mensajeComp = "("+i+") "+tiempoActual;
                         mensaje2_bytes = mensajeComp.getBytes();
-                        paqueteEnv = new DatagramPacket(mensaje2_bytes, mensajeComp.length(), address, puerto);
+                        System.out.println(mensajeComp);
+                        DatagramPacket paqueteEnv = new DatagramPacket(mensaje2_bytes, mensajeComp.length(), address, puerto);
 
                         socket.send(paqueteEnv);
                     }
+                    //mensaje = null;
                 }
-
+                //paquete = null;
                 /*
                 mensaje2_bytes = mensajeComp.getBytes();
                 paqueteEnv = new DatagramPacket(mensaje2_bytes,mensajeComp.length(),address,puerto);
