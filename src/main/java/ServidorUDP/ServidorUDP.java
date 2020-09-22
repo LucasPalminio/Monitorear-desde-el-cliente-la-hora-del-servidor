@@ -19,7 +19,7 @@ public class ServidorUDP {
 
         try{
 
-            socket = new DatagramSocket(33333);
+            socket = new DatagramSocket(6000);
             byte[] mensajeBytes = new byte[256];
             String mensaje = "";
             mensaje = new String(mensajeBytes);
