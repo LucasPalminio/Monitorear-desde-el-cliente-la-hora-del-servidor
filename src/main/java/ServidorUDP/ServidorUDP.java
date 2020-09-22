@@ -1,13 +1,12 @@
-package ServidorTCP;
+package ServidorUDP;
 
 import java.net.*;
-import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 /*
 * Monitorear desde el cliente, la hora de servidor, incluidos segundos y milisegundos.
 * */
-public class ServidorTCP {
+public class ServidorUDP {
     public static void main(String[] args) {
         LocalDateTime reloj = LocalDateTime.now();
 

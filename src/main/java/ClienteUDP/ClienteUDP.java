@@ -1,9 +1,8 @@
-package ClienteTCP;
+package ClienteUDP;
 
 import java.net.*;
-import java.io.*;
 
-public class ClienteTCP {
+public class ClienteUDP {
     public static void main(String[] args) {
         Socket clienteSocket;
         try{
