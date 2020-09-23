@@ -16,14 +16,14 @@ public class ClienteUDP {
         while (true) {
             try {
                 System.out.print("¿Cuantas solicitudes desea hacer?: ");
-                nroSolicitudes = scanner.nextInt();
+                nroSolicitudes = scanner.nextInt(); // Número de horas que se desea recibir
 
 
                 DatagramSocket clienteSocket;
-                InetAddress address;
+                InetAddress address; // Dirección IP del cliente
 
                 clienteSocket = new DatagramSocket();
-                address = InetAddress.getByName("localhost");
+                address = InetAddress.getByName("localhost"); // Se asigna la IP local
 
                 byte[] mensaje_bytes = new byte[256];
                 String mensaje = String.valueOf(nroSolicitudes);
@@ -35,18 +35,18 @@ public class ClienteUDP {
 
                     byte[] recogerServidor_bytes = new byte[256];
                     DatagramPacket servPaquete = new DatagramPacket(recogerServidor_bytes, 256);
-                    clienteSocket.receive(servPaquete);
-                    String cadenaMensaje = new String(recogerServidor_bytes).trim();
+                    clienteSocket.receive(servPaquete); // Se recibe la respuesta
+                    String cadenaMensaje = new String(recogerServidor_bytes).trim(); // Se almacena la respuesta en una variable String
                     if (!cadenaMensaje.equals("")) {
-                        System.out.println(cadenaMensaje);
+                        System.out.println(cadenaMensaje); // Se imprime la hora recibida del servidor
                         contador++;
                     }
                 } while (contador < nroSolicitudes);
 
-            } catch (InputMismatchException e) {
+            } catch (InputMismatchException e) { // Este mensaje de error se despliega en caso de no introducir un número para enviar, pero no afecta a la continuidad misma del programa
                 System.err.println("Error, ¡ingrese un numero! " + e.getMessage());
                 scanner.nextLine();
-            } catch (Exception e) {
+            } catch (Exception e) { // En caso de sufrir cualquier otro error, se despliega el mensaje de error y el programa se cierra
                 System.err.println(e.getMessage());
                 break;
             }
